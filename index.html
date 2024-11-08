@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js"></script>
+    <title>Task №9</title>
+    <style>
+        .calculator{
+            width: 525px;
+        }
+        button{
+            width:95px;
+            height:95px;
+            margin: 5px;
+            font-size: 30px;
+            text-align: center;
+        }
+        ._0{ width:200px;}
+        .equals{
+            height: 200px;
+        }
+        table{
+            border:5px solid rgb(89, 136, 238);
+            margin: 20px;
+            padding:15px;
+        }
+        td{
+            max-width: 100px;
+            max-height: 100px;
+            width: 100%;
+            height: 100%;
+        }
+        input{
+            width: 503px;
+            height: 80px;
+            margin:5px;
+            font-size: 50px;
+            text-align: right;
+            pointer-events: none;
+            color:rgb(170, 169, 169);
+        }
+        .input-gray{
+            position: absolute;
+            width: 503px;
+            height: 80px;
+            margin: 20px auto;
+            margin-left: 9px;
+            font-weight: 0;
+            font-size: 50px;
+            text-align: right;
+            pointer-events: none;
+
+            font-family:Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="calculator">
+    <table >
+        <tr>
+            <td colspan="5">
+                <div class="input-gray"></div>
+                <input type="text" >
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button class="_7">7</button>
+            </td>
+            <td>
+                <button class="_8">8</button>
+            </td>
+            <td>
+                <button class="_9">9</button>
+            </td>
+            <td>
+                <button class="operation">/</button>
+            </td>
+            <td>
+                <button class="delete">C</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button class="_4">4</button>
+            </td>
+            <td>
+                <button class="_5">5</button>
+            </td>
+            <td>
+                <button class="_6">6</button>
+            </td>
+            <td>
+                <button class="operation">*</button>
+            </td>
+            <td>
+                <button class="left">←</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button class="_1">1</button>
+            </td>
+            <td>
+                <button class="_2">2</button>
+            </td>
+            <td>
+                <button class="_3">3</button>
+            </td>
+            <td>
+                <button class="operation">-</button>
+            </td>
+            <td rowspan="2">
+                <button class="equals">=</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="_0">0</button>
+            </td>
+            <td>
+                <button class="dot">.</button>
+            </td>
+            <td>
+                <button class="operation">+</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    let equal_pressed = false;
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll("button[class *='_']").forEach(element =>{
+            element.addEventListener('click',function(element){
+                if(equal_pressed)
+                {
+                    document.querySelector('input').value = "";
+                    document.querySelector('.input-gray').textContent = "";
+                    equal_pressed = false;
+                }
+                if(isNaN(parseFloat(document.querySelector('input').value.slice(-1))) == true && document.querySelector('input').value.slice(-1) != '.')
+                {
+                    document.querySelector('.input-gray').textContent = "";
+                }
+                document.querySelector('input').value+=element.target.textContent;
+                document.querySelector('.input-gray').textContent+=element.target.textContent;
+            })
+        });
+        document.querySelector('.dot').addEventListener('click', function(){
+            if(document.querySelector('input').value.slice(-1) != '.')
+            {
+                document.querySelector('input').value+= '.';
+                document.querySelector('.input-gray').textContent+='.'
+            }
+        })
+        document.querySelector('.delete').addEventListener('click',function(){
+            document.querySelector('input').value = "";
+            document.querySelector('.input-gray').textContent = "";
+        })
+        document.querySelector('.left').addEventListener('click', function(){
+            document.querySelector('input').value = document.querySelector('input').value.slice(0,-1);
+            document.querySelector('.input-gray').textContent=document.querySelector('.input-gray').textContent.slice(0,-1);
+        })
+        document.querySelectorAll('.operation').forEach(element =>{
+            element.addEventListener('click', function(element){
+                if (equal_pressed){equal_pressed = false;}
+                if(document.querySelector('input').value.length!=0 ){
+                    if(isNaN(parseFloat(document.querySelector('input').value.slice(-1))) == 1)
+                    {
+                        document.querySelector('input').value = document.querySelector('input').value.slice(0,-1);
+                        document.querySelector('.input-gray').textContent =document.querySelector('.input-gray').textContent.slice(0,-1);
+                    }
+                    document.querySelector('.input-gray').textContent+=element.target.textContent;
+                    document.querySelector('input').value+=element.target.textContent;
+                }
+            });
+        })
+        document.querySelector('.equals').addEventListener('click',function(){
+            if(isNaN(parseFloat(document.querySelector('input').value.slice(-1))) == 0)
+            {
+                document.querySelector('input').value = eval(document.querySelector('input').value);
+                document.querySelector('.input-gray').textContent = document.querySelector('input').value;
+                equal_pressed = true
+            }
+
+        })
+    })
+</script>
+</body>
+</html>
